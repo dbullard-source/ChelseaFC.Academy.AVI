@@ -153,60 +153,47 @@
             display: inline-block;
         }
 
-        /* --- PROJECTION CHART --- */
-        .chart-container {
-            background: rgba(0,0,0,0.2);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 40px;
+        /* --- PLAYBOOK STYLES --- */
+        .playbook-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
             margin-bottom: 60px;
         }
-        
-        .bar-chart {
+
+        .playbook-card {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 12px;
+            padding: 25px;
             display: flex;
-            align-items: flex-end;
-            justify-content: space-around;
-            height: 450px; /* INCREASED HEIGHT */
-            margin-top: 40px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
+            gap: 20px;
+            align-items: flex-start;
         }
-        
-        .bar {
-            flex: 1;
-            margin: 0 15px;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-end;
-            position: relative;
+
+        .pb-num {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--cfc-blue-light);
+            opacity: 0.8;
+            line-height: 1;
         }
-        
-        .bar-fill {
-            background: linear-gradient(135deg, #034694 0%, #2b65b5 100%);
-            border-radius: 6px 6px 0 0;
-            transition: height 1s ease;
-            width: 100%;
-            min-height: 4px;
+
+        .pb-content h4 { font-size: 1.1rem; margin-bottom: 8px; color: #fff; }
+        .pb-content p { font-size: 0.95rem; color: var(--text-muted); line-height: 1.5; }
+
+        .data-split {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 30px;
         }
-        
-        .bar-fill.current { background: rgba(255,255,255,0.1); }
-        
-        .bar-val {
-            position: absolute;
-            top: -35px;
-            width: 100%;
-            text-align: center;
-            font-weight: 700;
-            font-size: 16px;
-        }
-        
-        .bar-lbl {
-            text-align: center;
-            margin-top: 15px;
-            font-size: 12px;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 1px;
+
+        .split-card {
+            background: rgba(3, 70, 148, 0.15);
+            border: 1px solid var(--cfc-blue);
+            padding: 20px;
+            border-radius: 12px;
         }
 
         /* --- PRICING GRID --- */
@@ -230,11 +217,13 @@
 
         .price-card:hover { transform: translateY(-5px); border-color: var(--cfc-blue-light); }
 
-        /* Highlight Recommended Card */
-        .price-card.scale {
-            background: linear-gradient(145deg, rgba(3, 70, 148, 0.15) 0%, rgba(0,0,0,0.2) 100%);
-            border: 2px solid var(--cfc-blue);
-            box-shadow: 0 0 30px rgba(3, 70, 148, 0.15);
+        /* Highlight Recommended Card (GROWTH) */
+        .price-card.growth {
+            background: linear-gradient(145deg, rgba(3, 70, 148, 0.25) 0%, rgba(0,0,0,0.3) 100%);
+            border: 2px solid var(--cfc-blue-light);
+            box-shadow: 0 0 30px rgba(3, 70, 148, 0.2);
+            transform: scale(1.03);
+            z-index: 2;
         }
 
         .tier-name {
@@ -246,7 +235,7 @@
             margin-bottom: 15px;
         }
         
-        .price-card.scale .tier-name { color: var(--success); }
+        .price-card.growth .tier-name { color: #fff; }
 
         .tier-price { font-size: 2.5rem; font-weight: 800; color: #fff; line-height: 1; margin-bottom: 5px; }
         .tier-save { font-size: 0.75rem; color: var(--success); font-weight: 600; margin-bottom: 20px; }
@@ -270,29 +259,97 @@
         
         .feat-list li.bold { color: #fff; font-weight: 600; }
 
-        /* --- VALUE PROP FOOTER --- */
-        .value-prop {
-            background: linear-gradient(90deg, rgba(3, 70, 148, 0.2), rgba(0,0,0,0));
-            border-left: 4px solid var(--cfc-blue-light);
-            padding: 40px;
-            border-radius: 0 16px 16px 0;
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 30px;
+        /* --- CHART STYLES (FIXED) --- */
+        .chart-container {
+            background: rgba(0,0,0,0.2);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 40px 60px; /* Added side padding for breadth */
+            margin-bottom: 60px;
+            height: 550px; /* Taller container */
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
 
-        .prop-item h3 { font-size: 1.1rem; color: #fff; margin-bottom: 10px; }
-        .prop-item p { font-size: 0.9rem; color: var(--text-muted); line-height: 1.5; }
+        .bar-chart {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between; /* Spread bars out */
+            height: 380px; /* Taller chart area */
+            margin-top: 40px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding-bottom: 0;
+            gap: 20px; /* Gap between bars */
+        }
+
+        .bar {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            position: relative;
+            max-width: 120px; /* Limit max width so they don't get too fat */
+            min-width: 60px;
+        }
+
+        .bar-fill {
+            border-radius: 8px 8px 0 0;
+            width: 100%;
+            transition: height 1s;
+            position: relative;
+        }
+
+        /* Specific Colors per the image */
+        .bar-fill.current { background: #334155; } /* Grey/Blue for Current */
+        .bar-fill.growth { background: var(--cfc-blue-light); } /* Blue for Growth */
+        .bar-fill.target { background: var(--success); } /* Green for Target */
+
+        .bar-val {
+            position: absolute;
+            top: -40px;
+            width: 100%;
+            text-align: center;
+            font-weight: 800;
+            font-size: 1.4rem; /* Larger Value Text */
+            color: #fff;
+        }
+        
+        .bar-val.target-text { color: var(--success); }
+
+        .bar-lbl {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            font-weight: 700;
+            letter-spacing: 1px;
+            line-height: 1.4;
+        }
+
+        /* --- FOOTER --- */
+        .footer {
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding-top: 40px;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
 
         @media (max-width: 1000px) {
             .pricing-grid { grid-template-columns: 1fr 1fr; }
             .table-header, .table-row { grid-template-columns: 1fr 1fr; gap: 10px; }
-            .table-header > *:nth-child(n+3), .table-row > *:nth-child(n+3) { display: none; } /* Hide extra cols on mobile */
-            .value-prop { grid-template-columns: 1fr; }
+            .table-header > *:nth-child(n+3), .table-row > *:nth-child(n+3) { display: none; }
+            .data-split { grid-template-columns: 1fr; }
         }
         @media (max-width: 600px) {
             .pricing-grid { grid-template-columns: 1fr; }
             .main-header { flex-direction: column; gap: 20px; text-align: center; }
+            .chart-container { padding: 20px; height: auto; }
+            .bar-chart { height: 250px; gap: 10px; }
+            .bar-val { font-size: 1rem; }
         }
     </style>
 </head>
@@ -307,13 +364,78 @@
             <div class="brand-name">ATHLETIVERSE <span style="font-weight: 300; color: var(--text-muted);">PARTNERSHIP</span></div>
         </div>
         <div class="header-right">
-            <span class="doc-badge">Commercial Data</span>
-            <div style="font-weight: 700; font-size: 1.1rem; margin: 4px 0;">Sponsorship & Pricing</div>
-            <div class="meta-date">Based on Last 90 Days Performance</div>
+            <span class="doc-badge">Commercial Strategy</span>
+            <div style="font-weight: 700; font-size: 1.1rem; margin: 4px 0;">Academy Digital Operating System</div>
+            <div class="meta-date">Prepared for Chelsea FC Academy</div>
         </div>
     </header>
 
-    <h2 class="section-title">Current Sponsor Valuation (90-Day Snapshot)</h2>
+    <div style="margin-bottom:60px; max-width:900px;">
+        <h1 style="font-size:2.5rem; font-weight:800; margin-bottom:20px; line-height:1.2;">Orchestrating the Academy's<br>Digital Commercial Future</h1>
+        <p style="font-size:1.1rem; color:var(--text-muted); line-height:1.6;">
+            Athletiverse is a digital operating system that orchestrates content creation, sponsorship sales, and analytics—helping teams do more with less. 
+            <strong>Note:</strong> The data below reflects <strong>Instagram performance only</strong>. The Athletiverse system scales this same measurement and valuation framework to <strong>X (Twitter), YouTube, and TikTok</strong> to capture the full digital footprint.
+        </p>
+    </div>
+
+    <h2 class="section-title">Current Value Distribution (90 Days)</h2>
+    <div class="data-split">
+        <div class="split-card">
+            <div style="font-size:0.8rem; text-transform:uppercase; color:var(--text-muted); margin-bottom:10px;">Organic Content</div>
+            <div style="font-size:2.5rem; font-weight:800; color:#fff; line-height:1;">$359,099</div>
+            <div style="margin-top:10px; font-size:0.9rem; color:var(--text-muted);">
+                <span style="color:#fff; font-weight:700;">149 Posts</span> • 88% of Volume
+            </div>
+        </div>
+        <div class="split-card" style="border-color:var(--success); background:rgba(16, 185, 129, 0.1);">
+            <div style="font-size:0.8rem; text-transform:uppercase; color:var(--success); margin-bottom:10px;">Collaborator Content</div>
+            <div style="font-size:2.5rem; font-weight:800; color:#fff; line-height:1;">$51,253</div>
+            <div style="margin-top:10px; font-size:0.9rem; color:var(--text-muted);">
+                <span style="color:#fff; font-weight:700;">19 Posts</span> • 12% of Volume
+            </div>
+        </div>
+    </div>
+
+    <h2 class="section-title">Execution Playbook</h2>
+    <div class="playbook-grid">
+        <div class="playbook-card">
+            <div class="pb-num">01</div>
+            <div class="pb-content">
+                <h4>Content Format Taxonomy</h4>
+                <p>Deploy systematic hashtag architecture to track performance by content type, creating "inventory" for brands (e.g., #CobhamTraining, #MatchDay, #AcademyLife).</p>
+            </div>
+        </div>
+        <div class="playbook-card">
+            <div class="pb-num">02</div>
+            <div class="pb-content">
+                <h4>Collaborator Scaling</h4>
+                <p>Scale athlete collaborator posts from <strong>12% (19 posts) to 20% of volume</strong>. This shift maximizes player networks to drive the account towards a higher quarterly valuation target.</p>
+            </div>
+        </div>
+        <div class="playbook-card">
+            <div class="pb-num">03</div>
+            <div class="pb-content">
+                <h4>Automated Sponsor Dashboards</h4>
+                <p>Replace manual spreadsheet reporting with automated brand portals for Nike, Trivago, and others—saving 1,750+ internal hours annually.</p>
+            </div>
+        </div>
+        <div class="playbook-card">
+            <div class="pb-num">04</div>
+            <div class="pb-content">
+                <h4>Event-Based Repository</h4>
+                <p>Build a historical data asset for every major <strong>Chelsea Academy event</strong> (e.g., FA Youth Cup runs) to turn performance into sellable case studies.</p>
+            </div>
+        </div>
+        <div class="playbook-card">
+            <div class="pb-num">05</div>
+            <div class="pb-content">
+                <h4>Multi-Platform Integration</h4>
+                <p>Integrate TikTok, YouTube, and Facebook to capture every dollar of unattributed brand exposure currently missing from the Instagram-only baseline.</p>
+            </div>
+        </div>
+    </div>
+
+    <h2 class="section-title">Partner Performance & Projection</h2>
     <div class="data-card">
         <div class="table-header">
             <div>Sponsor Partner</div>
@@ -321,165 +443,149 @@
             <div>Post Volume</div>
             <div>365-Day Projection</div>
         </div>
-
         <div class="table-row">
             <div class="sp-name">Nike</div>
             <div class="sp-val">$103,327.34</div>
             <div class="sp-posts">39 Posts</div>
             <div class="sp-proj">$413,309</div>
         </div>
-
         <div class="table-row">
             <div class="sp-name">New Balance</div>
             <div class="sp-val">$25,492.61</div>
             <div class="sp-posts">2 Posts</div>
             <div class="sp-proj">$101,970</div>
         </div>
-
         <div class="table-row">
             <div class="sp-name">Brembo</div>
             <div class="sp-val">$19,562.20</div>
             <div class="sp-posts">1 Post</div>
             <div class="sp-proj">$78,248</div>
         </div>
-
         <div class="table-row">
             <div class="sp-name">DEAcademy</div>
             <div class="sp-val">$19,562.20</div>
             <div class="sp-posts">1 Post</div>
             <div class="sp-proj">$78,248</div>
         </div>
-
         <div class="table-row">
             <div class="sp-name">Isybank</div>
             <div class="sp-val">$19,562.20</div>
             <div class="sp-posts">1 Post</div>
             <div class="sp-proj">$78,248</div>
         </div>
-
         <div class="table-row">
             <div class="sp-name">Konami</div>
             <div class="sp-val">$19,562.20</div>
             <div class="sp-posts">1 Post</div>
             <div class="sp-proj">$78,248</div>
         </div>
-
         <div class="table-row">
             <div class="sp-name">Lete</div>
             <div class="sp-val">$19,562.20</div>
             <div class="sp-posts">1 Post</div>
             <div class="sp-proj">$78,248</div>
         </div>
-
         <div class="table-row">
             <div class="sp-name">Tecnobody</div>
             <div class="sp-val">$19,562.20</div>
             <div class="sp-posts">1 Post</div>
             <div class="sp-proj">$78,248</div>
         </div>
-
         <div class="table-row">
             <div class="sp-name">Hey Dude</div>
             <div class="sp-val">$2,780.68</div>
             <div class="sp-posts">2 Posts</div>
             <div class="sp-proj">$11,122</div>
         </div>
-
         <div class="table-row">
             <div class="sp-name">Capital Sky</div>
             <div class="sp-val">$229.21</div>
             <div class="sp-posts">1 Post</div>
             <div class="sp-proj">$916</div>
         </div>
-        
-        <div style="padding:15px 24px; font-size:0.8rem; color:var(--text-muted); background:rgba(0,0,0,0.2);">
-            *365-Day Projection assumes linear consistency based on current run-rate. Optimization strategies outlined below aim to increase this by 30-50%.
-        </div>
     </div>
 
-    <div class="section">
-        <h2 class="section-title">12-Month Commercial Projection</h2>
-        <div class="chart-container">
-            <div style="text-align:center; font-size:18px; font-weight:700; margin-bottom:10px;">Projected EMV Growth Through Optimization</div>
-            <p style="text-align:center; color:var(--text-muted); font-size:14px;">Based on current 90-day run rate of $381k (~$127k/mo) + Strategy Implementation</p>
+    <h2 class="section-title">12-Month Commercial Projection</h2>
+    <div class="chart-container">
+        <div style="text-align:center; font-size:1.5rem; font-weight:800; margin-bottom:5px;">Projected EMV Growth Through Optimization</div>
+        <p style="text-align:center; color:var(--text-muted); font-size:1rem; margin-bottom:30px;">Based on current 90-day run rate (~$127k/mo) + Strategy Implementation</p>
 
-            <div class="bar-chart">
-                <div class="bar">
-                    <div class="bar-val">$127k</div>
-                    <div class="bar-fill current" style="height: 35%;"></div> <div class="bar-lbl">Current<br>(Monthly)</div>
-                </div>
-                <div class="bar">
-                    <div class="bar-val" style="color:var(--cfc-royal)">$165k</div>
-                    <div class="bar-fill" style="height: 50%;"></div>
-                    <div class="bar-lbl">Q1 2026<br>(+30%)</div>
-                </div>
-                <div class="bar">
-                    <div class="bar-val" style="color:var(--cfc-royal)">$220k</div>
-                    <div class="bar-fill" style="height: 65%;"></div>
-                    <div class="bar-lbl">Q2 2026<br>(+73%)</div>
-                </div>
-                <div class="bar">
-                    <div class="bar-val" style="color:var(--cfc-royal)">$300k</div>
-                    <div class="bar-fill" style="height: 80%;"></div>
-                    <div class="bar-lbl">Q3 2026<br>(+136%)</div>
-                </div>
-                <div class="bar">
-                    <div class="bar-val" style="color:#fff">$400k</div>
-                    <div class="bar-fill" style="height: 100%; background:var(--success);"></div>
-                    <div class="bar-lbl" style="color:#fff; font-weight:700;">Q4 2026<br>(+215%)</div>
-                </div>
+        <div class="bar-chart">
+            <div class="bar">
+                <div class="bar-val">$127k</div>
+                <div class="bar-fill current" style="height: 32%;"></div>
+                <div class="bar-lbl">Current<br>(Monthly)</div>
+            </div>
+            
+            <div class="bar">
+                <div class="bar-val">$165k</div>
+                <div class="bar-fill growth" style="height: 41%;"></div>
+                <div class="bar-lbl">Q1 2026<br>(+30%)</div>
+            </div>
+            
+            <div class="bar">
+                <div class="bar-val">$220k</div>
+                <div class="bar-fill growth" style="height: 55%;"></div>
+                <div class="bar-lbl">Q2 2026<br>(+73%)</div>
+            </div>
+            
+            <div class="bar">
+                <div class="bar-val">$300k</div>
+                <div class="bar-fill growth" style="height: 75%;"></div>
+                <div class="bar-lbl">Q3 2026<br>(+136%)</div>
+            </div>
+            
+            <div class="bar">
+                <div class="bar-val target-text">$400k</div>
+                <div class="bar-fill target" style="height: 100%;"></div>
+                <div class="bar-lbl" style="color:#fff; font-weight:800;">Q4 2026<br>(+215%)</div>
             </div>
         </div>
     </div>
 
-    <h2 class="section-title">AVI Platform Pricing</h2>
+    <h2 class="section-title">Recommended Growth Plan</h2>
     <div class="pricing-grid">
         <div class="price-card">
             <div class="tier-name">Starter</div>
-            <div class="tier-price">$449</div>
+            <div class="tier-price">$449<span style="font-size:1rem; font-weight:400; color:var(--text-muted);">/mo</span></div>
             <div class="tier-save">Save 15% annually ($4,580/yr)</div>
             <ul class="feat-list">
                 <li>3 Social Accounts</li>
                 <li>200 Posts Tracked/mo</li>
                 <li>3 User Seats</li>
                 <li>365-Day Retention</li>
-                <li>Basic AI Insights</li>
                 <li class="bold">Priority Support</li>
+                <li class="bold">Sponsor Projections</li>
+            </ul>
+        </div>
+
+        <div class="price-card growth">
+            <div class="tier-name">Growth</div>
+            <div class="tier-price">$899<span style="font-size:1rem; font-weight:400; color:rgba(255,255,255,0.7);">/mo</span></div>
+            <div class="tier-save">Save 20% annually ($8,630/yr)</div>
+            <div style="position:absolute; top:-12px; left:50%; transform:translateX(-50%); background:var(--cfc-blue); color:#fff; border:1px solid #fff; font-size:0.75rem; font-weight:800; padding:4px 12px; border-radius:12px; white-space:nowrap;">RECOMMENDED</div>
+            <ul class="feat-list">
+                <li style="color:#fff;">7 Social Accounts</li>
+                <li style="color:#fff;">800 Posts Tracked/mo</li>
+                <li style="color:#fff;">5 User Seats</li>
+                <li style="color:#fff;">10 Competitor Benchmarks</li>
+                <li class="bold">Advanced AI Insights</li>
                 <li class="bold">Sponsor Projections</li>
                 <li class="bold">Leadership Reports</li>
             </ul>
         </div>
 
         <div class="price-card">
-            <div class="tier-name">Growth</div>
-            <div class="tier-price">$899</div>
-            <div class="tier-save">Save 20% annually ($8,630/yr)</div>
-            <ul class="feat-list">
-                <li>7 Social Accounts</li>
-                <li>800 Posts Tracked/mo</li>
-                <li>5 User Seats</li>
-                <li>10 Competitor Benchmarks</li>
-                <li>Advanced AI Insights</li>
-                <li class="bold">Priority Support</li>
-                <li class="bold">Sponsor Projections</li>
-                <li class="bold">Leadership Reports</li>
-            </ul>
-        </div>
-
-        <div class="price-card scale">
             <div class="tier-name">Scale</div>
-            <div class="tier-price">$1,999</div>
+            <div class="tier-price">$1,999<span style="font-size:1rem; font-weight:400; color:var(--text-muted);">/mo</span></div>
             <div class="tier-save">Save 25% annually ($17,991/yr)</div>
-            <div style="position:absolute; top:-12px; left:50%; transform:translateX(-50%); background:var(--success); color:#000; font-size:0.7rem; font-weight:800; padding:4px 12px; border-radius:12px;">RECOMMENDED</div>
             <ul class="feat-list">
                 <li>15 Social Accounts</li>
                 <li>1,200 Posts Tracked/mo</li>
                 <li>12 User Seats</li>
                 <li>25 Competitor Benchmarks</li>
-                <li>Media Analysis Included</li>
-                <li>Full AI Suite</li>
-                <li class="bold">Priority Support</li>
-                <li class="bold">Sponsor Projections</li>
+                <li class="bold">Media Analysis Included</li>
+                <li class="bold">Full AI Suite</li>
             </ul>
         </div>
 
@@ -498,20 +604,10 @@
         </div>
     </div>
 
-    <h2 class="section-title">The Strategic Unlock</h2>
-    <div class="value-prop">
-        <div class="prop-item">
-            <h3>Passive Revenue Creation</h3>
-            <p>Athletiverse automates the identification of "accidental" value—where sponsors appear organically in content—turning previously unclaimed exposure into billable inventory without additional workload.</p>
-        </div>
-        <div class="prop-item">
-            <h3>Maximize Brand Partnerships</h3>
-            <p>By moving from flat-fee assumptions to real-time digital valuation, Chelsea FC Academy can defend higher price points, prove ROI to partners like Nike and Konami instantly, and secure renewals based on data, not just prestige.</p>
-        </div>
-        <div class="prop-item">
-            <h3>Platform Expansion</h3>
-            <p>While Instagram is the current engine, AVI's infrastructure allows you to seamlessly scale this measurement standard to TikTok and YouTube, capturing the full digital footprint of your elite content.</p>
-        </div>
+    <div class="footer">
+        <div style="font-weight:800; font-size:1.2rem; color:#fff; margin-bottom:10px;">ATHLETIVERSE</div>
+        <p>Partnership Proposal • Prepared for Chelsea FC Academy</p>
+        <p>© 2026 Athletiverse. Confidential.</p>
     </div>
 
 </div>
